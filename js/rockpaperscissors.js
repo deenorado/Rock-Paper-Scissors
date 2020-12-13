@@ -1,80 +1,70 @@
-const computerChoices = ['Rock', 'Paper', 'Scissors'];
-
-let playerSelection;
-let computerSelection;
-
-function computerPlay () {
-    let compPick = Math.floor(Math.random() * computerChoices.length);
-    computerPick = computerChoices[compPick];
-    return computerPick;
-}
-
-function playerPlay () {
-    let playerPick = prompt("Take your pick, rock, paper, or scissors: ").toLowerCase();
-    return playerPick;
-}
-
-function playRound (playerSelection, computerSelection) {
-    playerSelection = playerPlay();
-    computerSelection = computerPlay();
-    if (playerSelection == 'rock' && computerSelection == 'Paper') {
-        alert("Paper beats rock! Computer wins!");
-        computerScore++;
-    } 
-    else if (playerSelection == 'rock' && computerSelection == 'Scissors') {
-        alert("Rock beats scissors! Player wins!");
-        playerScore++;
-    }
-    else if (playerSelection == 'rock' && computerSelection == 'Rock') {
-        alert("It's a tie!");
-        playerScore++;
-        computerScore++;
-    }
-    else if (playerSelection == 'paper' && computerSelection == 'Rock') {
-        alert("Paper beats rock! Player wins!");
-        playerScore++;
-    }
-    else if (playerSelection == 'paper' && computerSelection == 'Paper') {
-        alert("It's a tie!");
-        playerScore++;
-        computerScore++;
-    }
-    else if (playerSelection == 'paper' && computerSelection == 'Scissors') {
-        alert ("Scissors beat paper! Computer wins!");
-        computerScore++;
-    }
-    else if (playerSelection == 'scissors' && computerSelection == 'Rock') {
-        alert ("Rock beats scissors! Computer wins!");
-        computerScore++;
-    }
-    else if (playerSelection == 'scissors' && computerSelection == 'Paper') {
-        alert ("Scissors beat paper! Player wins!");
-        playerScore++;
-    }
-    else if (playerSelection == 'scissors' && computerSelection == 'Scissors') {
-        alert ("It's a tie!");
-        playerScore++;
-        computerScore++;
-    }
-    else {
-        alert("Please input a valid play.");
-    }
-}
-
+const choices = ["Rock", "Paper", "Scissors"];
 let playerScore = 0;
-let computerScore = 0;
+let compScore = 0;
+const buttons = document.querySelectorAll("button");
+const scoreP = document.getElementById("scorePlayer");
+const scoreC = document.getElementById("scoreComp");
 
-function winner () {
-    playerScore > computerScore ? alert("Player wins!") : alert("Computer wins!");
+for (let i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener("click", playRound);
 }
 
-function game () {
-    for (i = 0; i < 5; i++) {
-        playRound(playerSelection, computerSelection);
-        console.log("your score = " + playerScore);
-        console.log("Computer's score = " + computerScore);
-    }
-    winner();
+function computerPlay() {
+  let what = choices[Math.floor(Math.random() * choices.length)];
+  return what;
 }
 
-console.log(game());
+function playRound(e) {
+  let computerSelection = computerPlay();
+  let playerSelection = e.target.innerText;
+  if (
+    (playerSelection === "Rock" && computerSelection === "Paper") ||
+    (playerSelection === "Paper" && computerSelection === "Scissors") ||
+    (playerSelection === "Scissors" && computerSelection === "Rock")
+  ) {
+    alert("COMP won!");
+    compScore++;
+    scoreP.textContent = `Player's score: ${playerScore}`;
+    scoreC.textContent = `Computer's score: ${compScore}`;
+  } else if (
+    (playerSelection === "Rock" && computerSelection === "Scissors") ||
+    (playerSelection === "Paper" && computerSelection === "Rock") ||
+    (playerSelection === "Scissors" && computerSelection === "Paper")
+  ) {
+    alert("PLAYER won!");
+    playerScore++;
+    scoreP.textContent = `Player's score: ${playerScore}`;
+    scoreC.textContent = `Computer's score: ${compScore}`;
+  } else if (playerSelection === computerSelection) {
+    alert("TIE!");
+  } else {
+    alert("Invalid play");
+  }
+
+  if (playerScore === 5) {
+    alert("Player wins the war");
+    playerScore = 0;
+    compScore = 0;
+    scoreP.textContent = `Player's score: ${playerScore}`;
+    scoreC.textContent = `Computer's score: ${compScore}`;
+  } else if (compScore === 5) {
+    alert("Computer wins the war");
+    playerScore = 0;
+    compScore = 0;
+    scoreP.textContent = `Player's score: ${playerScore}`;
+    scoreC.textContent = `Computer's score: ${compScore}`;
+  }
+}
+
+// function game() {
+//   playRound;
+//   if (playerScore === 5) {
+//     alert("Player wins the war");
+//     playerScore = 0;
+//     compScore = 0;
+//   } else if (compScore === 5) {
+//     alert("Computer wins the war");
+//     playerScore = 0;
+//     compScore = 0;
+//   }
+// }
